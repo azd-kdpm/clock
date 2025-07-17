@@ -2,14 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Clock with Date</title>
+  <title>Large Dark Clock</title>
   <style>
-    body { display:flex; justify-content:center; align-items:center; height:100vh;
-           background:#f0f0f0; font-family:sans-serif; }
-    #clock { background:#333; color:#fff; padding:20px;
-             border-radius:8px; text-align:center; }
-    #time { font-size:48px; letter-spacing:2px; }
-    #date { font-size:20px; margin-top:8px; }
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #111;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+    }
+    #clock {
+      text-align: center;
+    }
+    #time {
+      font-size: 8rem;
+    }
+    #date {
+      font-size: 2.5rem;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body onload="startTime()">
@@ -20,36 +34,26 @@
 
   <script>
     function startTime() {
-      const today = new Date();
+      const now = new Date();
+      let h = now.getHours();
+      let m = now.getMinutes();
+      let s = now.getSeconds();
+      if (m < 10) m = '0' + m;
+      if (s < 10) s = '0' + s;
 
-      // Time components with leading zeros
-      let h = today.getHours();
-      let m = today.getMinutes();
-      let s = today.getSeconds();
-      m = checkTime(m);
-      s = checkTime(s);
+      document.getElementById('time').innerText = `${h}:${m}:${s}`;
 
-      // Format as HH:MM:SS
-      document.getElementById('time').innerHTML = `${h}:${m}:${s}`;
+      const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      const dayName = days[now.getDay()];
+      const dayNum = now.getDate();
+      const monthName = months[now.getMonth()];
+      const year = now.getFullYear();
 
-      // Date components
-      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      const months = ['January','February','March','April','May','June',
-                      'July','August','September','October','November','December'];
-      const dayName = days[today.getDay()];
-      const dayNum = today.getDate();
-      const monthName = months[today.getMonth()];
-      const year = today.getFullYear();
+      document.getElementById('date').innerText =
+        `${dayName}, ${monthName} ${dayNum}, ${year}`;
 
-      // Format as "Wed, 17 July 2025"
-      document.getElementById('date').innerHTML = `${dayName}, ${dayNum} ${monthName} ${year}`;
-
-      // Refresh every second
       setTimeout(startTime, 1000);
-    }
-
-    function checkTime(i) {
-      return i < 10 ? '0' + i : i;
     }
   </script>
 </body>
