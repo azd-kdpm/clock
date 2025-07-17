@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Digital Clock</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #282c34;
+      color: #61dafb;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+    }
+    #clock {
+      font-size: 4rem;
+      background: #20232a;
+      padding: 2rem 4rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div id="clock">00:00:00 AM</div>
+  <script>
+    function showTime() {
+      const now = new Date();
+      let hr = now.getHours();
+      let min = now.getMinutes();
+      let sec = now.getSeconds();
+      const ampm = hr >= 12 ? 'PM' : 'AM';
+      hr = hr % 12 || 12;
+      hr = hr < 10 ? '0' + hr : hr;
+      min = min < 10 ? '0' + min : min;
+      sec = sec < 10 ? '0' + sec : sec;
+      document.getElementById('clock').textContent = `${hr}:${min}:${sec} ${ampm}`;
+    }
+    setInterval(showTime, 1000);
+    showTime();
+  </script>
+</body>
+</html>
