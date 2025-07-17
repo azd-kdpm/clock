@@ -1,45 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Simple Digital Clock</title>
+  <meta charset="UTF-8">
+  <title>Clock with Date</title>
   <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #282c34;
-      color: #61dafb;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-    }
-    #clock {
-      font-size: 4rem;
-      background: #20232a;
-      padding: 2rem 4rem;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
+    body { display:flex; justify-content:center; align-items:center; height:100vh;
+           background:#f0f0f0; font-family:sans-serif; }
+    #clock { background:#333; color:#fff; padding:20px;
+             border-radius:8px; text-align:center; }
+    #time { font-size:48px; letter-spacing:2px; }
+    #date { font-size:20px; margin-top:8px; }
   </style>
 </head>
-<body>
-  <div id="clock">00:00:00 AM</div>
+<body onload="startTime()">
+  <div id="clock">
+    <div id="time">--:--:--</div>
+    <div id="date">Loading date...</div>
+  </div>
+
   <script>
-    function showTime() {
-      const now = new Date();
-      let hr = now.getHours();
-      let min = now.getMinutes();
-      let sec = now.getSeconds();
-      const ampm = hr >= 12 ? 'PM' : 'AM';
-      hr = hr % 12 || 12;
-      hr = hr < 10 ? '0' + hr : hr;
-      min = min < 10 ? '0' + min : min;
-      sec = sec < 10 ? '0' + sec : sec;
-      document.getElementById('clock').textContent = `${hr}:${min}:${sec} ${ampm}`;
+    function startTime() {
+      const today = new Date();
+
+      // Time components with leading zeros
+      let h = today.getHours();
+      let m = today.getMinutes();
+      let s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+
+      // Format as HH:MM:SS
+      document.getElementById('time').innerHTML = `${h}:${m}:${s}`;
+
+      // Date components
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const months = ['January','February','March','April','May','June',
+                      'July','August','September','October','November','December'];
+      const dayName = days[today.getDay()];
+      const dayNum = today.getDate();
+      const monthName = months[today.getMonth()];
+      const year = today.getFullYear();
+
+      // Format as "Wed, 17 July 2025"
+      document.getElementById('date').innerHTML = `${dayName}, ${dayNum} ${monthName} ${year}`;
+
+      // Refresh every second
+      setTimeout(startTime, 1000);
     }
-    setInterval(showTime, 1000);
-    showTime();
+
+    function checkTime(i) {
+      return i < 10 ? '0' + i : i;
+    }
   </script>
 </body>
 </html>
